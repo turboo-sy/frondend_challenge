@@ -25,7 +25,7 @@ main {
     border-radius: 16px;
     background-color: hsl(216, 50%, 16%);
     box-shadow: 0vh 4vh 73px 0px hsl(0deg 0% 0% / 62%);
-    transform: scale(0.9);
+    transform: scale(0.8);
 }
 
 div {
