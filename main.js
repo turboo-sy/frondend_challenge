@@ -1,30 +1,54 @@
-let firstName = document.querySelector("input[name = firstName ]");
-let lastName = document.querySelector("input[name = lastName ]");
-let emailAddress = document.querySelector("input[name = userEmail ]");
-let password = document.querySelector("input[name = password ]");
-let submit = document.getElementById("submit");
-let alert1 = document.querySelector( ".alert1" );
-let alert2 = document.querySelector( ".alert2" );
-let alert3  = document.querySelector( ".alert3" );
-let alert4  = document.querySelector(".alert4");
+const form = document.querySelector("form");
+const firstName = document.querySelector("#firstName");
+const lastName = document.querySelector("#lastName");
+const email = document.querySelector("#email");
+const password = document.querySelector("#password");
+const input = document.querySelectorAll("main form div input");
+const alertInfo = document.querySelectorAll("main form div img");
+const alertMsg = document.querySelectorAll("main form div span.alert");
 
-document.forms = addEventListener ("submit" , (e) => {
-  let passwordReg = /([A-Z]){1}@\d+/g;   
-  let emailReg = /\w+@\w+.(com|net|org)/gi;
+let dataValid = [];
 
-  if (emailReg.test(emailAddress.value) === false) {
-    e.preventDefault();
-    emailAddress.style.borderColor = "hsl(0, 100%, 74%)";
-    alert3.style.display = "block"
-  }if(passwordReg.test(password.value) === false) {
-    e.preventDefault();
-    password.style.borderColor = "hsl(0, 100%, 74%)";
-    alert4.style.display = "block"
-  }if (firstName.value === "" || lastName.value === "" ) {
-    firstName.style.borderColor = "hsl(0, 100%, 74%)";
-    lastName.style.borderColor = "hsl(0, 100%, 74%)";
-    alert1.style.display = "block";
-    alert2.style.display = "block";
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  firstName.value == "" ? alertDisplayBlock(0) : alertDisplayNone(0);
+  lastName.value == "" ? alertDisplayBlock(1) : alertDisplayNone(1);
+  email.value == "" ? alertDisplayBlock(2) : checkEmail();
+  password.value == "" ? alertDisplayBlock(3) : alertDisplayNone(3);
+
+  alertSuccess();
+});
+
+function alertDisplayBlock(i) {
+  alertMsg[i].classList.add("block");
+  alertInfo[i].classList.add("block");
+  input[i].classList.add("errInput");
+}
+
+function alertDisplayNone(i) {
+  pushDataValid(i);
+  alertMsg[i].classList.remove("block");
+  alertInfo[i].classList.remove("block");
+  input[i].classList.remove("errInput");
+}
+
+function checkEmail() {
+  const pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+  if (!email.value.match(pattern)) {
+    alertMsg[2].innerHTML = "Looks like this is not an email";
+  } else {
+    alertMsg[2].innerHTML = "Email cannot be empty";
+    alertDisplayNone(2);
   }
-})
+}
 
+function pushDataValid(i) {
+  dataValid.push(i);
+  dataValid = [...new Set(dataValid)];
+}
+
+function alertSuccess() {
+  dataValid.length > 3 ? alert("Success claim free trial") : "";
+}
